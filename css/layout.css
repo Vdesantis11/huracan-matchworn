@@ -112,7 +112,6 @@
 }
 .site-footer__grid{
   display: grid; gap: 32px;
-  grid-template-columns: minmax(0,1.5fr) repeat(2, minmax(0,1fr));
   align-items: start;
 }
 .site-footer h4{

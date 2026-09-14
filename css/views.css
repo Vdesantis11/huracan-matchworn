@@ -809,6 +809,14 @@ textarea.field{ resize: vertical; min-height: 88px; line-height: 1.5; }
 .skit-hero__stage.is-zoom img{ object-fit: contain; max-height: 80vh; }
 
 /* kit creator */
+.creator-layout{
+  display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+  gap: clamp(24px, 4vw, 56px); align-items: center;
+}
+.creator-layout__text{ color: var(--ink-2); font-size: var(--fs-md); max-width: 46ch; }
+@media (max-width: 720px){
+  .creator-layout{ grid-template-columns: 1fr; }
+}
 .creator-stage{
   border: 1px solid var(--line); border-radius: var(--r-xl);
   background: var(--paper-2); padding: clamp(18px, 4vw, 44px);

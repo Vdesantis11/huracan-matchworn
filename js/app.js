@@ -11,7 +11,7 @@ import { installSearchOverlay, open as openSearch } from './components/searchOve
 import { installAuthWidget } from './components/authWidget.js';
 import { load, subscribe, nextFixtures } from './data/store.js';
 import { startRouter, route } from './router.js';
-import { initAuth, isMember, subscribe as subscribeAuth } from './data/auth.js';
+import { initAuth, subscribe as subscribeAuth } from './data/auth.js';
 import { clubShort } from './data/clubs.js';
 
 /* ---------- tema ---------- */
@@ -65,7 +65,6 @@ function installHeader() {
 
   installAuthWidget();
   subscribeAuth(() => {
-    qs('#edit-flag')?.toggleAttribute('hidden', !isMember());
     if (routerStarted) route();
   });
 }
