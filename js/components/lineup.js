@@ -25,6 +25,7 @@ import {
   slotsFor,
   slotWidth,
   emptyLineup,
+  loadRemoteLineup,
   readLineup,
   saveLineup,
   clearLineup,
@@ -360,5 +361,14 @@ export function mountLineup(match) {
   });
 
   paint();
+
+  /* La formación real de Supabase llega después del primer pintado; si trae
+     algo y nadie tocó nada a mano mientras tanto, se repinta con eso. */
+  loadRemoteLineup(match.id).then((found) => {
+    if (!found || !state || state.matchId !== match.id || state.editing) return;
+    state.lineup = readLineup(match.id) || state.lineup;
+    paint();
+  });
+
   return () => { state = null; };
 }
