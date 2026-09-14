@@ -14,6 +14,7 @@ import { matchHref } from './components/matchCard.js';
 import { startRouter, route } from './router.js';
 import { initAuth, subscribe as subscribeAuth } from './data/auth.js';
 import { clubShort } from './data/clubs.js';
+import { competitionLogo } from './data/competitions.js';
 
 /* ---------- tema ---------- */
 
@@ -47,14 +48,19 @@ function renderTopbar() {
     return;
   }
   const items = fixtures
-    .map(
-      (m) => `<a class="topbar__fixture" href="${matchHref(m)}">
+    .map((m) => {
+      const logo = competitionLogo(m.family, m.date);
+      const compHTML = logo
+        ? `<img class="topbar__comp" src="${esc(logo)}" alt="${esc(m.family.short)}" title="${esc(m.family.short)}">`
+        : `<span class="topbar__comp topbar__comp--text">${esc(m.family.short)}</span>`;
+      return `<a class="topbar__fixture" href="${matchHref(m)}">
+          ${compHTML}
+          <strong>${esc(dateMedium(m.date))} · vs</strong>
           ${crestHTML(m.club, 'xs', { onDark: true })}
-          <strong>${esc(dateMedium(m.date))} · vs ${esc(clubShort(m.club))}</strong>
-          <span>${esc(m.family.short)}</span>
-        </a>`
-    )
-    .join('');
+          <span>${esc(clubShort(m.club))}</span>
+        </a>`;
+    })
+    .join('<span class="topbar__sep" aria-hidden="true">·</span>');
   el.innerHTML = `<div class="shell topbar__inner">
       <span class="topbar__label">Próximo${fixtures.length > 1 ? 's' : ''} partido${fixtures.length > 1 ? 's' : ''}</span>
       ${items}

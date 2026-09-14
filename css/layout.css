@@ -31,7 +31,7 @@
   padding: 9px 0; text-transform: uppercase;
 }
 .topbar:empty{ display: none; }
-.topbar__inner{ display: flex; align-items: center; gap: 16px; justify-content: center; text-align: center; flex-wrap: wrap; }
+.topbar__inner{ display: flex; align-items: center; gap: 24px; justify-content: center; text-align: center; flex-wrap: wrap; }
 .topbar__label{ opacity: .78; }
 .topbar__fixture{
   display: inline-flex; align-items: center; gap: 7px; color: #fff;
@@ -40,6 +40,9 @@
 .topbar__fixture:hover{ opacity: .82; }
 .topbar__fixture .crest{ filter: drop-shadow(0 1px 3px rgb(0 0 0 / .3)); }
 .topbar__fixture span{ opacity: .78; }
+.topbar__comp{ height: 16px; width: auto; max-width: 22px; object-fit: contain; flex: none; }
+.topbar__comp--text{ opacity: .78; font-size: .95em; }
+.topbar__sep{ opacity: .4; }
 
 /* ---------- header ---------- */
 .site-header{
