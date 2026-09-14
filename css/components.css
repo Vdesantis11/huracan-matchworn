@@ -164,7 +164,7 @@ button.chip:hover{ border-color: var(--line-2); color: var(--ink); }
 .match-card__stage{
   position: relative; aspect-ratio: 16/11;
   display: grid; place-items: center;
-  background: var(--paper-2);
+  background: var(--paper);
   overflow: hidden;
 }
 .match-card__stage::after{
