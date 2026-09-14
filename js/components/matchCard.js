@@ -63,7 +63,7 @@ export function matchCardHTML(match, options = {}) {
         ${showStar ? `<span class="star-badge" title="${esc(match.highlightReason)}">${icon('star')}</span>` : ''}
       </div>
       <div class="match-card__body">
-        <h3 class="match-card__rival">${esc(clubShort(match.club))}</h3>
+        <h3 class="match-card__rival">${crestHTML(match.club, 'xs')}<span>${esc(clubShort(match.club))}</span></h3>
         <div class="match-card__meta mono">
           <span>${esc(dateMedium(match.date))}</span><i>·</i>
           <span>${esc(venueShort(match.venue))}</span><i>·</i>
