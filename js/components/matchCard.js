@@ -50,14 +50,13 @@ function kitFlagHTML(match) {
 export function matchCardHTML(match, options = {}) {
   const showStar = options.starred && match.highlightReason;
   const scoreText = match.played ? `${match.gf}–${match.ga}` : 'A jugarse';
+  const scoreClass = match.result ? ` match-card__score--${resultClass(match.result)}` : '';
+  const scoreTitle = match.result ? esc(resultLong(match.result)) : '';
 
   return `<a class="match-card reveal" href="${matchHref(match)}" style="${accentVars(match)}">
       <div class="match-card__stage">
         <div class="match-card__tags">
           <span class="chip chip--static">${esc(match.family.short)}</span>
-          ${match.result
-            ? `<span class="res res--${resultClass(match.result)}" title="${esc(resultLong(match.result))}">${resultLabel(match.result)}</span>`
-            : `<span class="res res--x">—</span>`}
         </div>
         ${stageHTML(match)}
         ${showStar ? `<span class="star-badge" title="${esc(match.highlightReason)}">${icon('star')}</span>` : ''}
@@ -67,7 +66,7 @@ export function matchCardHTML(match, options = {}) {
         <div class="match-card__meta mono">
           <span>${esc(dateMedium(match.date))}</span><i>·</i>
           <span>${esc(venueShort(match.venue))}</span><i>·</i>
-          <span>${esc(scoreText)}</span>
+          <span class="match-card__score${scoreClass}" title="${scoreTitle}">${esc(scoreText)}</span>
         </div>
       </div>
       <div class="match-card__foot">

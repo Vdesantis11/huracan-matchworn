@@ -189,7 +189,7 @@ button.chip:hover{ border-color: var(--line-2); color: var(--ink); }
 
 .match-card__tags{
   position: absolute; inset-inline: 12px; top: 12px; z-index: 2;
-  display: flex; align-items: flex-start; justify-content: space-between; gap: 8px;
+  display: flex; align-items: flex-start; gap: 8px;
 }
 .match-card__tags .chip{
   background: color-mix(in srgb, var(--paper) 82%, transparent);
@@ -212,6 +212,10 @@ button.chip:hover{ border-color: var(--line-2); color: var(--ink); }
   display: flex; align-items: center; gap: 7px; flex-wrap: wrap;
 }
 .match-card__meta i{ font-style: normal; opacity: .45; }
+.match-card__score{ font-weight: 600; }
+.match-card__score--w{ color: var(--win); }
+.match-card__score--d{ color: var(--draw); }
+.match-card__score--l{ color: var(--loss); }
 
 .match-card__foot{
   margin-top: auto; padding: 11px 16px;
