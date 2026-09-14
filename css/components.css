@@ -83,10 +83,10 @@ button.chip:hover{ border-color: var(--line-2); color: var(--ink); }
 
 .comp-badge{
   display: inline-flex; align-items: center; justify-content: center;
-  height: 56px;
+  height: 46px; margin: -6px 0 0 -6px;
 }
 .comp-badge img{
-  height: 100%; width: auto; max-width: 92px; object-fit: contain; display: block;
+  height: 100%; width: auto; max-width: 78px; object-fit: contain; display: block;
   filter: drop-shadow(0 2px 5px rgb(0 0 0 / .35));
 }
 .chip--red{ color: var(--red); border-color: color-mix(in srgb, var(--red) 34%, transparent); background: var(--red-tint); }
