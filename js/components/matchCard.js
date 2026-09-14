@@ -58,7 +58,9 @@ export function matchCardHTML(match, options = {}) {
   return `<a class="match-card reveal" href="${matchHref(match)}" style="${accentVars(match)}">
       <div class="match-card__stage">
         <div class="match-card__tags">
-          <span class="chip chip--static">${logo ? `<img class="chip__logo" src="${esc(logo)}" alt="">` : ''}${esc(match.family.short)}</span>
+          ${logo
+            ? `<span class="comp-badge"><img src="${esc(logo)}" alt="${esc(match.family.short)}" title="${esc(match.family.short)}"></span>`
+            : `<span class="chip chip--static">${esc(match.family.short)}</span>`}
         </div>
         ${stageHTML(match)}
         ${showStar ? `<span class="star-badge" title="${esc(match.highlightReason)}">${icon('star')}</span>` : ''}

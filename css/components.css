@@ -79,8 +79,15 @@ button.chip:hover{ border-color: var(--line-2); color: var(--ink); }
 .chip .crest{ margin-inline-start: -4px; }
 
 .chip svg{ width: 13px; height: 13px; flex: none; }
-.chip__logo{ height: 14px; width: auto; max-width: 22px; object-fit: contain; flex: none; }
 .chip--static{ pointer-events: none; }
+
+.comp-badge{
+  display: inline-flex; align-items: center; justify-content: center;
+  height: 34px; padding: 3px;
+  border-radius: var(--r-md); background: var(--paper);
+  border: 1px solid var(--line);
+}
+.comp-badge img{ height: 100%; width: auto; max-width: 54px; object-fit: contain; display: block; }
 .chip--red{ color: var(--red); border-color: color-mix(in srgb, var(--red) 34%, transparent); background: var(--red-tint); }
 .chip--gold{ color: var(--gold); border-color: color-mix(in srgb, var(--gold) 38%, transparent); background: var(--gold-tint); }
 .chip--onDark{ background: rgba(255,255,255,.07); border-color: var(--line-dark); color: var(--on-dark-2); }
