@@ -186,8 +186,12 @@ button.chip:hover{ border-color: var(--line-2); color: var(--ink); }
    se muestran enteras y centradas en vez de recortadas, como una prenda en vitrina. */
 .match-card__photo--ref{
   position: static; width: auto; height: 78%; max-width: 82%; object-fit: contain;
-  filter: drop-shadow(0 8px 16px rgb(0 0 0 / .16));
+  mix-blend-mode: multiply;
 }
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]) .match-card__photo--ref{ mix-blend-mode: normal; }
+}
+:root[data-theme="dark"] .match-card__photo--ref{ mix-blend-mode: normal; }
 .match-card:hover .match-card__photo--ref{ transform: scale(1.05); }
 .ref-badge{
   position: absolute; z-index: 2; left: 12px; bottom: 12px;
