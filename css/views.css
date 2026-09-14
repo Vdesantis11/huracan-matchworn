@@ -108,6 +108,43 @@
   .piece-rail{ grid-auto-columns: minmax(200px, 1fr); }
 }
 
+.piece-rail--decades{ grid-auto-columns: minmax(168px, 190px); }
+@media (max-width: 640px){
+  .piece-rail--decades{ grid-auto-columns: minmax(132px, 150px); }
+}
+.decade-card{
+  position: relative; aspect-ratio: 1/1; border-radius: var(--r-lg);
+  overflow: hidden; display: block; background: var(--paper-2);
+  border: 1px solid var(--line);
+  transition: transform var(--t-mid) var(--ease-out), box-shadow var(--t-mid) var(--ease-out), border-color var(--t-mid) var(--ease);
+}
+.decade-card:hover, .decade-card:focus-visible{
+  transform: translateY(-4px); box-shadow: var(--sh-3); border-color: var(--line-2);
+}
+.decade-card img{
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+  transition: transform var(--t-slow) var(--ease-out);
+}
+.decade-card:hover img{ transform: scale(1.06); }
+.decade-card::after{
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(0deg, rgb(0 0 0 / .75) 0%, rgb(0 0 0 / .18) 48%, transparent 66%);
+}
+.decade-card__label{
+  position: absolute; inset-inline: 14px; bottom: 12px; z-index: 1;
+  display: flex; flex-direction: column; gap: 2px; color: #fff;
+}
+.decade-card__label b{
+  font-family: var(--font-display); font-size: clamp(1.5rem, 4.4vw, 2rem);
+  line-height: 1; letter-spacing: -.01em;
+}
+.decade-card__label span{ font-size: var(--fs-xs); opacity: .82; }
+.decade-card--crest{ display: grid; place-items: center; }
+.decade-card--crest .crest{ width: 44%; height: 44%; }
+.decade-card--crest::after{ content: none; }
+.decade-card--crest .decade-card__label{ color: var(--ink); }
+.decade-card--crest .decade-card__label span{ color: var(--ink-3); opacity: 1; }
+
 /* ============ COLECCIÓN ============ */
 .collection-head{ padding-block: clamp(28px, 4vw, 48px) 0; }
 .collection-head h1{ font-size: clamp(2rem, 5.4vw, 3.4rem); }
