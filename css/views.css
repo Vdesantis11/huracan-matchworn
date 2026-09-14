@@ -87,14 +87,6 @@
   .dressup__stage{ width: min(320px, 92%); }
 }
 
-/* ============ HOME · franja de contexto ============ */
-.ribbon{
-  background: var(--red); color: #fff;
-  font-family: var(--font-mono); font-size: var(--fs-xs); letter-spacing: .06em;
-  padding: 9px 0; text-transform: uppercase;
-}
-.ribbon__inner{ display: flex; align-items: center; gap: 12px; justify-content: center; text-align: center; flex-wrap: wrap; }
-
 /* ============ HOME · efemérides ============ */
 .onthisday{ display: grid; gap: 18px; }
 .onthisday__list{ display: grid; gap: 10px; }

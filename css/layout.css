@@ -24,6 +24,15 @@
 }
 .section-head__link:hover{ gap: 12px; }
 
+/* ---------- topbar ---------- */
+.topbar{
+  background: var(--red); color: #fff;
+  font-family: var(--font-mono); font-size: var(--fs-xs); letter-spacing: .06em;
+  padding: 9px 0; text-transform: uppercase;
+}
+.topbar:empty{ display: none; }
+.topbar__inner{ display: flex; align-items: center; gap: 12px; justify-content: center; text-align: center; flex-wrap: wrap; }
+
 /* ---------- header ---------- */
 .site-header{
   position: sticky; top: 0; z-index: 60;

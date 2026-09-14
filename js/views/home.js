@@ -5,16 +5,15 @@
 
 import { esc } from '../lib/dom.js';
 import { icon } from '../lib/icons.js';
-import { dateLong, dateMedium, num, plural, yearsAgo, decadeLabel } from '../lib/format.js';
+import { dateLong, num, plural, yearsAgo, decadeLabel } from '../lib/format.js';
 import {
-  globalStats, featured, onThisDay, latestPlayed, nextFixtures, facetCounts,
+  globalStats, featured, onThisDay, latestPlayed, facetCounts,
 } from '../data/store.js';
 import { kitCount } from '../data/seasonKits.js';
 import { crestHTML } from '../components/crest.js';
 import { dressUpCompactHTML, mountDressUpCompact } from '../components/dressup.js';
 import { matchCardHTML, matchHref } from '../components/matchCard.js';
 import { sectionHead, statHTML } from '../components/ui.js';
-import { clubShort } from '../data/clubs.js';
 
 function heroHTML(stats) {
   return `<section class="hero">
@@ -37,18 +36,6 @@ function heroHTML(stats) {
         ${dressUpCompactHTML()}
       </div>
     </section>`;
-}
-
-function ribbonHTML() {
-  const next = nextFixtures(1)[0];
-  if (!next) return '';
-  return `<div class="ribbon">
-      <div class="shell ribbon__inner">
-        <span>Próximo partido</span>
-        <strong>${esc(dateMedium(next.date))} · ${next.venue === 'A' ? 'vs' : 'vs'} ${esc(clubShort(next.club))}</strong>
-        <span>${esc(next.family.short)}</span>
-      </div>
-    </div>`;
 }
 
 function onThisDayHTML() {
@@ -103,35 +90,6 @@ function featuredHTML() {
     </section>`;
 }
 
-function numbersHTML(stats) {
-  return `<section class="section section--dark">
-      <div class="shell">
-        ${sectionHead({
-          eyebrow: 'El archivo en números',
-          title: 'Medio siglo de Globo',
-          link: { href: '#/estadisticas', text: 'Todas las estadísticas' },
-          onDark: true,
-        })}
-        <div class="stat-grid reveal">
-          ${statHTML({ value: stats.w, label: 'Ganados', color: 'var(--win)' })}
-          ${statHTML({ value: stats.d, label: 'Empatados', color: 'var(--draw)' })}
-          ${statHTML({ value: stats.l, label: 'Perdidos', color: 'var(--loss)' })}
-          ${statHTML({ value: stats.gf, label: 'Goles a favor' })}
-          ${statHTML({ value: `${Math.round(stats.winRate * 100)}%`, label: 'Efectividad' })}
-        </div>
-        ${stats.topRival
-          ? `<p class="lede" style="color:var(--on-dark-2);margin-top:34px">
-              El rival más repetido del archivo es <strong style="color:var(--on-dark)">${esc(stats.topRival.club.name)}</strong>,
-              con ${plural(stats.topRival.matches.length, 'partido', 'partidos')}.
-              ${stats.biggestWin
-                ? `La goleada más grande sigue siendo el ${esc(dateMedium(stats.biggestWin.date))} ante ${esc(stats.biggestWin.club.name)}: ${stats.biggestWin.gf}–${stats.biggestWin.ga}.`
-                : ''}
-            </p>`
-          : ''}
-      </div>
-    </section>`;
-}
-
 function decadesHTML() {
   const { decades } = facetCounts();
   return `<section class="section">
@@ -155,12 +113,12 @@ function decadesHTML() {
 }
 
 function latestHTML() {
-  const list = latestPlayed(4);
+  const list = latestPlayed(8);
   if (!list.length) return '';
   return `<section class="section section--tight">
       <div class="shell">
         ${sectionHead({ eyebrow: 'Lo último', title: 'Partidos recientes' })}
-        <div class="piece-grid">${list.map((m) => matchCardHTML(m)).join('')}</div>
+        <div class="piece-rail">${list.map((m) => matchCardHTML(m)).join('')}</div>
       </div>
     </section>`;
 }
@@ -169,12 +127,10 @@ export function renderHome() {
   const stats = globalStats();
 
   return `${heroHTML(stats)}
-    ${ribbonHTML()}
-    ${onThisDayHTML()}
-    ${featuredHTML()}
-    ${numbersHTML(stats)}
     ${decadesHTML()}
-    ${latestHTML()}`;
+    ${latestHTML()}
+    ${featuredHTML()}
+    ${onThisDayHTML()}`;
 }
 
 export function mountHome() {
