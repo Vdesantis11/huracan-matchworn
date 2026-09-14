@@ -6,10 +6,11 @@ import { qs, esc } from './lib/dom.js';
 import { icon } from './lib/icons.js';
 import { dateMedium } from './lib/format.js';
 import { applyTheme, getTheme, cycleTheme, effectiveTheme } from './lib/storage.js';
-import { installCrestFallback } from './components/crest.js';
+import { installCrestFallback, crestHTML } from './components/crest.js';
 import { installSearchOverlay, open as openSearch } from './components/searchOverlay.js';
 import { installAuthWidget } from './components/authWidget.js';
 import { load, subscribe, nextFixtures } from './data/store.js';
+import { matchHref } from './components/matchCard.js';
 import { startRouter, route } from './router.js';
 import { initAuth, subscribe as subscribeAuth } from './data/auth.js';
 import { clubShort } from './data/clubs.js';
@@ -40,15 +41,23 @@ function installTheme() {
 function renderTopbar() {
   const el = qs('#topbar');
   if (!el) return;
-  const next = nextFixtures(1)[0];
-  if (!next) {
+  const fixtures = nextFixtures(3);
+  if (!fixtures.length) {
     el.innerHTML = '';
     return;
   }
+  const items = fixtures
+    .map(
+      (m) => `<a class="topbar__fixture" href="${matchHref(m)}">
+          ${crestHTML(m.club, 'xs', { onDark: true })}
+          <strong>${esc(dateMedium(m.date))} · vs ${esc(clubShort(m.club))}</strong>
+          <span>${esc(m.family.short)}</span>
+        </a>`
+    )
+    .join('');
   el.innerHTML = `<div class="shell topbar__inner">
-      <span>Próximo partido</span>
-      <strong>${esc(dateMedium(next.date))} · vs ${esc(clubShort(next.club))}</strong>
-      <span>${esc(next.family.short)}</span>
+      <span class="topbar__label">Próximo${fixtures.length > 1 ? 's' : ''} partido${fixtures.length > 1 ? 's' : ''}</span>
+      ${items}
     </div>`;
 }
 

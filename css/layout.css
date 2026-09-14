@@ -31,7 +31,15 @@
   padding: 9px 0; text-transform: uppercase;
 }
 .topbar:empty{ display: none; }
-.topbar__inner{ display: flex; align-items: center; gap: 12px; justify-content: center; text-align: center; flex-wrap: wrap; }
+.topbar__inner{ display: flex; align-items: center; gap: 16px; justify-content: center; text-align: center; flex-wrap: wrap; }
+.topbar__label{ opacity: .78; }
+.topbar__fixture{
+  display: inline-flex; align-items: center; gap: 7px; color: #fff;
+  transition: opacity var(--t-fast) var(--ease);
+}
+.topbar__fixture:hover{ opacity: .82; }
+.topbar__fixture .crest{ filter: drop-shadow(0 1px 3px rgb(0 0 0 / .3)); }
+.topbar__fixture span{ opacity: .78; }
 
 /* ---------- header ---------- */
 .site-header{
