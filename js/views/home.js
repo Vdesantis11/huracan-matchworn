@@ -11,7 +11,6 @@ import {
 } from '../data/store.js';
 import { crestHTML } from '../components/crest.js';
 import { dressUpCompactHTML, mountDressUpCompact } from '../components/dressup.js';
-import { jerseyHTML } from '../components/jersey.js';
 import { matchCardHTML, matchHref } from '../components/matchCard.js';
 import { sectionHead, statHTML } from '../components/ui.js';
 import { clubShort } from '../data/clubs.js';
@@ -165,27 +164,6 @@ function latestHTML() {
     </section>`;
 }
 
-function contributeHTML(stats) {
-  const missing = stats.total - stats.withKit;
-  return `<section class="section section--paper2">
-      <div class="shell">
-        <div class="panel reveal" style="display:grid;gap:22px;grid-template-columns:auto minmax(0,1fr);align-items:center">
-          <div style="color:var(--ink-3)">${jerseyHTML({ size: 92, label: '' })}</div>
-          <div>
-            <span class="eyebrow">El archivo se completa entre todos</span>
-            <h3 style="margin:10px 0 12px">Faltan ${num(missing)} camisetas</h3>
-            <p class="lede">Tenemos los ${num(stats.total)} partidos, pero casi ninguna camiseta identificada.
-              Si sabés cuál se usó, tenés una foto o te acordás de algo de ese partido, se puede cargar
-              desde la ficha — sin cuenta ni registro.</p>
-            <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap">
-              <a class="btn btn--primary" href="#/coleccion?sincamiseta=1&orden=highlight">${icon('camera')} Empezar a aportar</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>`;
-}
-
 export function renderHome() {
   const stats = globalStats();
 
@@ -195,8 +173,7 @@ export function renderHome() {
     ${featuredHTML()}
     ${numbersHTML(stats)}
     ${decadesHTML()}
-    ${latestHTML()}
-    ${contributeHTML(stats)}`;
+    ${latestHTML()}`;
 }
 
 export function mountHome() {

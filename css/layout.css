@@ -56,7 +56,7 @@
 .site-nav{ display: flex; align-items: center; gap: 2px; margin-inline: auto; }
 .site-nav__link{
   position: relative; padding: 8px 13px; border-radius: var(--r-pill);
-  font-size: var(--fs-sm); font-weight: 500; color: var(--ink-2);
+  font-size: var(--fs-sm); font-weight: 500; color: var(--ink-2); white-space: nowrap;
   transition: color var(--t-fast) var(--ease), background var(--t-fast) var(--ease);
 }
 .site-nav__link:hover{ color: var(--ink); background: var(--paper-2); }
