@@ -40,7 +40,7 @@ function stageHTML(match) {
 function kitFlagHTML(match) {
   if (match.kitPhoto) return `<span class="kit-flag kit-flag--has">${jerseyIcon()} Con foto</span>`;
   if (match.kitDescription) return `<span class="kit-flag kit-flag--has">${jerseyIcon()} Identificada</span>`;
-  return `<span class="kit-flag">${jerseyIcon()} Sin identificar</span>`;
+  return `<span class="kit-flag">${jerseyIcon()} Titular</span>`;
 }
 
 /**
