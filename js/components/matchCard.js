@@ -59,7 +59,7 @@ export function matchCardHTML(match, options = {}) {
       <div class="match-card__stage">
         <div class="match-card__tags">
           ${logo
-            ? `<span class="comp-badge"><img src="${esc(logo)}" alt="${esc(match.family.short)}" title="${esc(match.family.short)}"></span>`
+            ? `<span class="comp-badge" data-family="${esc(match.family.id)}"><img src="${esc(logo)}" alt="${esc(match.family.short)}" title="${esc(match.family.short)}"></span>`
             : `<span class="chip chip--static">${esc(match.family.short)}</span>`}
         </div>
         ${stageHTML(match)}

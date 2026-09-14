@@ -82,13 +82,18 @@ button.chip:hover{ border-color: var(--line-2); color: var(--ink); }
 .chip--static{ pointer-events: none; }
 
 .comp-badge{
-  display: inline-flex; align-items: center; justify-content: center;
+  display: inline-flex; align-items: flex-start; justify-content: center;
   height: 46px; margin: -6px 0 0 -6px;
 }
 .comp-badge img{
   height: 100%; width: auto; max-width: 78px; object-fit: contain; display: block;
   filter: drop-shadow(0 2px 5px rgb(0 0 0 / .35));
 }
+/* Los escudos de Libertadores/Sudamericana son isologos horizontales:
+   con la misma altura que el resto quedan flotando mas abajo, sobre la
+   camiseta, así que se les da menos alto y quedan pegados arriba. */
+.comp-badge[data-family="libertadores"],
+.comp-badge[data-family="sudamericana"]{ height: 26px; }
 .chip--red{ color: var(--red); border-color: color-mix(in srgb, var(--red) 34%, transparent); background: var(--red-tint); }
 .chip--gold{ color: var(--gold); border-color: color-mix(in srgb, var(--gold) 38%, transparent); background: var(--gold-tint); }
 .chip--onDark{ background: rgba(255,255,255,.07); border-color: var(--line-dark); color: var(--on-dark-2); }
@@ -166,11 +171,6 @@ button.chip:hover{ border-color: var(--line-2); color: var(--ink); }
   display: grid; place-items: center;
   background: var(--paper);
   overflow: hidden;
-}
-.match-card__stage::after{
-  content:""; position: absolute; inset: 0;
-  background: radial-gradient(118% 88% at 50% 6%, var(--card-wash, transparent) 0%, transparent 62%);
-  pointer-events: none;
 }
 .match-card__stage .crest{
   transition: transform var(--t-slow) var(--ease-out);
