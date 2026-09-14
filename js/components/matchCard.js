@@ -14,6 +14,7 @@ import { accentVars } from '../data/model.js';
 import { photoUrl } from '../data/api.js';
 import { clubShort } from '../data/clubs.js';
 import { kitsForYear } from '../data/seasonKits.js';
+import { competitionLogo } from '../data/competitions.js';
 
 export const matchHref = (match) => `#/partido/${encodeURIComponent(match.id)}`;
 
@@ -52,11 +53,12 @@ export function matchCardHTML(match, options = {}) {
   const scoreText = match.played ? `${match.gf}–${match.ga}` : 'A jugarse';
   const scoreClass = match.result ? ` match-card__score--${resultClass(match.result)}` : '';
   const scoreTitle = match.result ? esc(resultLong(match.result)) : '';
+  const logo = competitionLogo(match.family, match.date);
 
   return `<a class="match-card reveal" href="${matchHref(match)}" style="${accentVars(match)}">
       <div class="match-card__stage">
         <div class="match-card__tags">
-          <span class="chip chip--static">${esc(match.family.short)}</span>
+          <span class="chip chip--static">${logo ? `<img class="chip__logo" src="${esc(logo)}" alt="">` : ''}${esc(match.family.short)}</span>
         </div>
         ${stageHTML(match)}
         ${showStar ? `<span class="star-badge" title="${esc(match.highlightReason)}">${icon('star')}</span>` : ''}

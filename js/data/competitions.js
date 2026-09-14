@@ -62,6 +62,28 @@ export function competitionFamily(competition) {
 }
 
 /**
+ * Escudo de la competencia para un partido puntual.
+ *
+ * La liga de Primera cambió de organizador (y de escudo) varias veces sin
+ * cambiar de nombre: SAF entre el 27/6/2017 y el 19/5/2020, LPF (amarillo)
+ * hasta el 8/1/2026, y LPF (celeste) desde el 9/1/2026. Antes del 27/6/2017
+ * no hubo parche de liga, así que no se muestra nada.
+ */
+export function competitionLogo(family, date) {
+  const id = family && family.id;
+  if (id === 'primera') {
+    if (date >= '2026-01-09') return 'assets/competitions/lpf-2026.svg';
+    if (date >= '2020-05-20') return 'assets/competitions/lpf-2020.svg';
+    if (date >= '2017-06-27') return 'assets/competitions/saf.svg';
+    return null;
+  }
+  if (id === 'primera-nacional') return 'assets/competitions/primera-nacional.svg';
+  if (id === 'libertadores') return 'assets/competitions/libertadores.svg';
+  if (id === 'sudamericana') return 'assets/competitions/sudamericana.svg';
+  return null;
+}
+
+/**
  * Etiqueta corta de la edición: saca el nombre del torneo y deja el año/fase.
  * "Primera División 1993/1994 Clausura" -> "1993/1994 Clausura"
  */
