@@ -13,13 +13,26 @@ import { jerseyHTML, jerseyIcon } from './jersey.js';
 import { accentVars } from '../data/model.js';
 import { photoUrl } from '../data/api.js';
 import { clubShort } from '../data/clubs.js';
+import { kitsForYear } from '../data/seasonKits.js';
 
 export const matchHref = (match) => `#/partido/${encodeURIComponent(match.id)}`;
+
+/** La camiseta de esa temporada, mientras no haya foto propia del partido. */
+function seasonKitFallback(match) {
+  const kits = kitsForYear(match.year);
+  return kits.find((k) => k.kind === 'titular') || kits.find((k) => k.role === 'jugador') || null;
+}
 
 function stageHTML(match) {
   if (match.kitPhoto) {
     return `<img class="match-card__photo" src="${esc(photoUrl(match.kitPhoto))}"
         alt="Camiseta usada ante ${esc(match.club.name)}" loading="lazy" decoding="async">`;
+  }
+  const seasonKit = seasonKitFallback(match);
+  if (seasonKit) {
+    return `<img class="match-card__photo match-card__photo--ref" src="${esc(seasonKit.src)}"
+        alt="Camiseta de Huracán en ${match.year}" loading="lazy" decoding="async">
+      <span class="ref-badge mono">De ${match.year}</span>`;
   }
   return crestHTML(match.club, 'xl');
 }

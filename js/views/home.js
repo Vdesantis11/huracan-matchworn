@@ -9,6 +9,7 @@ import { dateLong, dateMedium, num, plural, yearsAgo, decadeLabel } from '../lib
 import {
   globalStats, featured, onThisDay, latestPlayed, nextFixtures, facetCounts,
 } from '../data/store.js';
+import { kitCount } from '../data/seasonKits.js';
 import { crestHTML } from '../components/crest.js';
 import { dressUpCompactHTML, mountDressUpCompact } from '../components/dressup.js';
 import { matchCardHTML, matchHref } from '../components/matchCard.js';
@@ -30,7 +31,7 @@ function heroHTML(stats) {
             ${statHTML({ value: stats.total, label: 'Partidos' })}
             ${statHTML({ value: stats.seasons, label: 'Temporadas' })}
             ${statHTML({ value: stats.rivals, label: 'Rivales' })}
-            ${statHTML({ value: stats.withKit, label: 'Camisetas', note: stats.withKit ? '' : 'todavía ninguna' })}
+            ${statHTML({ value: kitCount(), label: 'Camisetas en el archivo' })}
           </div>
         </div>
         ${dressUpCompactHTML()}

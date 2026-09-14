@@ -20,6 +20,8 @@ import { fetchPhotos, fetchKits, photoUrl } from '../data/api.js';
 import { isMember } from '../data/auth.js';
 import { HURACAN, clubShort } from '../data/clubs.js';
 import { isFavorite, toggleFavorite } from '../lib/storage.js';
+import { kitsForYear } from '../data/seasonKits.js';
+import { brandForYear, sponsorForYear } from '../data/brands.js';
 
 /* ---------------- utilidades ---------------- */
 
@@ -41,6 +43,16 @@ function videoDelPartido(match) {
     return { url: match.youtube_url, titulo: '', canal: '', confianza: 'base' };
   }
   return videoFor(match.id);
+}
+
+/**
+ * La camiseta de esa temporada, para usar de referencia mientras no se cargó
+ * la foto de ESTE partido puntual (se carga a mano, de a un partido por vez).
+ */
+function seasonKitFor(year, role = 'player') {
+  const kits = kitsForYear(year);
+  if (role === 'goalkeeper') return kits.find((k) => k.role === 'arquero') || null;
+  return kits.find((k) => k.kind === 'titular') || kits.find((k) => k.role === 'jugador') || null;
 }
 
 const wash = (match) => {
@@ -99,9 +111,10 @@ function heroHTML(match) {
 /**
  * Frente y dorso de una camiseta oficial (jugador o arquero).
  * Sin datos oficiales: si hay una foto aportada por hinchas, se muestra ésa.
+ * Si tampoco hay eso, se usa la camiseta de la temporada como referencia.
  * Sólo si no hay absolutamente nada se ve la silueta genérica.
  */
-function kitPairHTML(kit, fallbackPhotoUrl) {
+function kitPairHTML(kit, fallbackPhotoUrl, seasonKit) {
   if (kit && (kit.front_photo_path || kit.back_photo_path)) {
     const imgs = [
       kit.front_photo_path && `<img src="${esc(photoUrl(kit.front_photo_path))}" alt="Frente">`,
@@ -112,14 +125,25 @@ function kitPairHTML(kit, fallbackPhotoUrl) {
   if (fallbackPhotoUrl) {
     return `<img src="${esc(fallbackPhotoUrl)}" alt="Foto aportada por hinchas">`;
   }
+  if (seasonKit) {
+    return `<div class="kit-hero__ref">
+        <img src="${esc(seasonKit.src)}" alt="Camiseta de Huracán en ${esc(seasonKit.year)}, de referencia">
+        <span class="kit-hero__ref-tag mono">Referencia de la temporada ${esc(seasonKit.year)}</span>
+      </div>`;
+  }
   return jerseyHTML({ size: 220, label: 'Camiseta sin identificar' });
 }
 
-function kitCaptionHTML(description, sub) {
-  return description
-    ? `<h1 class="kit-title">${esc(description)}</h1>
-       ${sub ? `<p class="kit-sub">${esc(sub)}</p>` : ''}`
-    : `<h1 class="kit-title kit-title--muted">Camiseta sin identificar</h1>
+function kitCaptionHTML(description, sub, seasonKit) {
+  if (description) {
+    return `<h1 class="kit-title">${esc(description)}</h1>
+       ${sub ? `<p class="kit-sub">${esc(sub)}</p>` : ''}`;
+  }
+  if (seasonKit) {
+    return `<h1 class="kit-title">${esc(seasonKit.label)} ${esc(seasonKit.year)}</h1>
+       <p class="kit-sub">Todavía no se cargó la foto de este partido puntual: se muestra la camiseta de esa temporada a modo de referencia.</p>`;
+  }
+  return `<h1 class="kit-title kit-title--muted">Camiseta sin identificar</h1>
        <p class="kit-sub">Nadie cargó todavía cuál se usó esa tarde.</p>`;
 }
 
@@ -145,14 +169,24 @@ function kitTilesHTML(kit) {
 }
 
 /** Marca, parche y publicidades de la camiseta activa (jugador o arquero). */
-function kitMetaHTML(kit) {
-  if (!kit) return '';
-  const chips = [
-    kit.brand && `<span class="chip chip--static">Marca: ${esc(kit.brand)}</span>`,
-    kit.patch && `<span class="chip chip--static">Parche: ${esc(kit.patch)}</span>`,
-    ...(Array.isArray(kit.sponsors) ? kit.sponsors.map((s) => `<span class="chip chip--static">${esc(s)}</span>`) : []),
-  ].filter(Boolean);
-  return chips.length ? `<div class="chip-row">${chips.join('')}</div>` : '';
+function kitMetaHTML(kit, seasonKit, year) {
+  if (kit) {
+    const chips = [
+      kit.brand && `<span class="chip chip--static">Marca: ${esc(kit.brand)}</span>`,
+      kit.patch && `<span class="chip chip--static">Parche: ${esc(kit.patch)}</span>`,
+      ...(Array.isArray(kit.sponsors) ? kit.sponsors.map((s) => `<span class="chip chip--static">${esc(s)}</span>`) : []),
+    ].filter(Boolean);
+    return chips.length ? `<div class="chip-row">${chips.join('')}</div>` : '';
+  }
+  if (seasonKit) {
+    const chips = [
+      brandForYear(year) && `<span class="chip chip--static">Marca: ${esc(brandForYear(year))}</span>`,
+      sponsorForYear(year) && `<span class="chip chip--static">Sponsor: ${esc(sponsorForYear(year))}</span>`,
+      seasonKit.note && `<span class="chip chip--static">${esc(seasonKit.note)}</span>`,
+    ].filter(Boolean);
+    return chips.length ? `<div class="chip-row">${chips.join('')}</div>` : '';
+  }
+  return '';
 }
 
 /** Camiseta protagonista. */
@@ -161,7 +195,7 @@ function kitStageHTML(match) {
   const video = videoDelPartido(match);
   const placeholderStage = hasPhoto
     ? `<img src="${esc(photoUrl(match.kitPhoto))}" alt="Camiseta usada ante ${esc(match.club.name)}">`
-    : jerseyHTML({ size: 220, label: 'Camiseta sin identificar' });
+    : kitPairHTML(null, null, seasonKitFor(match.year));
 
   const videoBadge = video
     ? `<a class="kit-hero__video" href="${esc(video.url)}" target="_blank" rel="noopener"
@@ -198,9 +232,10 @@ function videoHTML(video) {
 
 /** Título, datos (marca/parche/publicidades) y formularios de aporte, en el ancho angosto habitual. */
 function kitInfoHTML(match) {
+  const seasonKit = match.kitDescription ? null : seasonKitFor(match.year);
   return `<div class="kit-caption">
-      <div id="kit-caption">${kitCaptionHTML(match.kitDescription, match.patch_note)}</div>
-      <div id="kit-meta"></div>
+      <div id="kit-caption">${kitCaptionHTML(match.kitDescription, match.patch_note, seasonKit)}</div>
+      <div id="kit-meta">${kitMetaHTML(null, seasonKit, match.year)}</div>
     </div>
     <div style="margin-top:18px">${kitEditorHTML()}</div>
     <div style="margin-top:18px">${contributeHTML(match)}</div>`;
@@ -363,11 +398,12 @@ export function mountPartido(ctx, rerender) {
     if (!kitStage) return;
     const kit = currentByRole.get(activeRole);
     const fallback = !kit && !match.kitPhoto && fanPhotos.length ? photoUrl(fanPhotos[0].storage_path) : null;
-    kitStage.innerHTML = kitPairHTML(kit, fallback);
+    const seasonKit = !kit && !match.kitPhoto && !fallback ? seasonKitFor(match.year, activeRole) : null;
+    kitStage.innerHTML = kitPairHTML(kit, fallback, seasonKit);
     if (kitCaption) {
-      kitCaption.innerHTML = kitCaptionHTML((kit && kit.description) || match.kitDescription, match.patch_note);
+      kitCaption.innerHTML = kitCaptionHTML((kit && kit.description) || match.kitDescription, match.patch_note, seasonKit);
     }
-    if (kitMeta) kitMeta.innerHTML = kitMetaHTML(kit);
+    if (kitMeta) kitMeta.innerHTML = kitMetaHTML(kit, seasonKit, match.year);
     if (kitTiles) kitTiles.innerHTML = kitTilesHTML(kit);
     if (kitRoleBtn) {
       const isPlayer = activeRole === 'player';
