@@ -1,5 +1,5 @@
 /**
- * El video de cada partido. 357 encontrados.
+ * El video de cada partido. 358 encontrados.
  *
  * ARCHIVO GENERADO: no editar a mano. Lo escribe el script que busca en YouTube
  * el resumen de cada partido; para cambiar algo hay que tocar el script o cargar
@@ -377,6 +377,7 @@ export const VIDEOS = {
   '2026-08-16-sarmiento-de-junin': ['EJ8-NOcUwaI', 'SARMIENTO 2 - 0 HURACÁN | Resumen del partido | #TorneoMercadoLibre Clausura 2026 🏆', 'Liga Profesional de Fútbol de la AFA', 'alta'],
   '2026-08-30-estudiantes-de-rio-cuarto': ['tnwHsH04-R4', 'HURACÁN 1 - 1 ESTUDIANTES RC | Resumen del partido | #TorneoMercadoLibre Clausura 2026 🏆', 'Liga Profesional de Fútbol de la AFA', 'alta'],
   '2026-09-05-belgrano-de-cordoba': ['BEO9q1uGHUQ', 'BELGRANO 1 - 1 HURACÁN | Resumen del partido | #TorneoMercadoLibre Clausura 2026 🏆', 'Liga Profesional de Fútbol de la AFA', 'alta'],
+  '2026-09-14-racing-club': ['ymwvIygJ-ps', 'HURACÁN 2 - 1 RACING | Resumen del partido | #TorneoMercadoLibre Clausura 2026 🏆', 'Liga Profesional de Fútbol de la AFA', 'alta'],
 };
 
 /** El video de un partido, o null. */
